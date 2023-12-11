@@ -1,3 +1,56 @@
+libqtxdg-3.12.0 / 2023-11-05
+============================
+ * Fixed a typo and bumped the version.
+
+libqtxdg-3.11.0 / 2023-04-15
+============================
+ * Fixed file association with symlink desktop entries.
+ * Fixed typos.
+
+libqtxdg-3.10.0 / 2022-11-05
+============================
+ * Invalidate GTK icon cache as soon as icons are installed.
+ * Follow `freedesktop.org` in adding dirs under `DefaultDirectoryDirs`.
+
+libqtxdg-3.9.1 / 2022-05-08
+===========================
+ * Separated `qtxdg-mat` and made installation of config files optional (to prepare for Qt6).
+
+libqtxdg-3.9.0 / 2022-04-15
+===========================
+ * Improved email client command line handling in qtxdg-mat.
+ * Handled '--help-all' option in qtxdg-mat.
+ * Supported string literals in Exec keys of desktop entries.
+ * Updated `README.md`.
+ * Fixed config file name with empty `XDG_CURRENT_DESKTOP`.
+
+libqtxdg-3.8.0 / 2021-11-04
+===========================
+ * Handle relative paths in qtxdg-desktop-file-start.
+ * Improved error message.
+ * Make sure hicolor is searched before dash fallbacks.
+ * Improved file manager command line handling in qtxdg-mat.
+ * Added default terminal.
+ * Consider XDG_DATA_HOME when computing desktop entry id.
+ * Consider Qt's fallback search paths when finding icons.
+
+libqtxdg-3.7.1 / 2021-04-16
+===========================
+ * Fixed compilation against Qt < 5.14.
+ * Added a nullity check for paint device.
+
+libqtxdg-3.7.0 / 2021-04-15
+===========================
+  * Removed deprecated XdgDesktopFileCache.
+  * Handled Qt 5.15 deprecations.
+  * Use "= default" for trivial constructors/destructors.
+  * Improved readability in container emptiness check.
+  * Ported QStringRef to QStringView.
+  * Moved to Qt5 signal/slot syntax.
+  * Added XTerm as a runtime dependency.
+  * Allow non-detached starting in xdgdesktopfile.
+  * Use QSvgRenderer for SVG icons.
+
 libqtxdg-3.6.0 / 2020-11-01
 ===========================
   * ￼Dropped deprecated QLinkedList.
@@ -370,7 +423,7 @@ libqtxdg-3.2.0 / 2018-05-21
   * Fixes an XdgMimeInfo memory leak
   * Use case insensitive comparisons with desktop environment names
   * Updates some XdgDesktopFile methods documentation
-  * Make desktop enviroment names comparisons case insensitive
+  * Make desktop environment names comparisons case insensitive
   * solve failed comp LXQT with LXQt (OnlyShowIn=LXQt;) in desktop files
   * Re-adds Support XDG_CURRENT_DESKTOP in autostart handling
   * Deprecates non desktop environment neutral XdgDesktopFile methods

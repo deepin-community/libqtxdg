@@ -1,8 +1,106 @@
-libqtxdg (3.6.0-1+deepin1) UNRELEASED; urgency=medium
+libqtxdg (3.12.0-1) unstable; urgency=medium
 
-  * update
+  * New upstream release.
 
- -- LXQt Packaging Team <pkg-lxqt-devel@lists.alioth.debian.org>  Thu, 08 Dec 2022 15:14:18 +0800
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Wed, 29 Nov 2023 00:57:28 +0800
+
+libqtxdg (3.11.0-2) unstable; urgency=medium
+
+  * debian/rules: Drop --fail-missing argument to dh_missing which is now
+    default in debhelper 13.
+  * debian/upstream/metadata: drop obsolete field Name.
+  * debian/upstream/metadata: correct the git Repository url as itʼs
+    different from Repository-Browse.
+  * debian/rules: suppress blhc error by added ignore-line-regexp.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Sat, 09 Sep 2023 14:54:54 +0200
+
+libqtxdg (3.11.0-1) unstable; urgency=medium
+
+  [ ChangZhuo Chen (陳昌倬) ]
+  * New upstream release.
+  * use unstable instead of sid in distribution.
+  * Change team email to <team+lxqt@tracker.debian.org>.
+  * Update d/copyright.
+
+  [ Andrew Lee (李健秋) ]
+  * debian/control: bump to Standards-version to 4.6.2, no changes needed.
+  * debian/copyright: update.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Mon, 12 Jun 2023 19:33:06 +0200
+
+libqtxdg (3.10.0-2) unstable; urgency=medium
+
+  * Add soversion in install files to prevent accidentally bumping soversion.
+  * Add shlibs files.
+
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Mon, 12 Dec 2022 00:32:45 +0800
+
+libqtxdg (3.10.0-1) unstable; urgency=medium
+
+  [ Palo Kisa ]
+  * debian/watch: Fix github uscan processing
+  * New upstream version 3.10.0
+
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Tue, 22 Nov 2022 23:35:40 +0800
+
+libqtxdg (3.9.1-3) unstable; urgency=medium
+
+  * debian/watch: fix uscan error.
+  * Drop C++ symbols according to
+    https://wiki.debian.org/UsingSymbolsFiles.
+  * debian/rules: link time optimizations enabled. (Closes: #1015514)
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Sat, 22 Oct 2022 16:13:13 +0800
+
+libqtxdg (3.9.1-2) experimental; urgency=medium
+
+  * Bumped Standards-Version to 4.6.1, no change required.
+  * Upstreamed symbols file for libqt5xdgiconloader3 from Ubuntu.
+  * Changed "binary-without-manpage" to "no-manual-page" in
+    qtxdg-dev-tools.lintian-overrides.
+  * Upstreamed watch file from Ubuntu.
+  * Ran wrap-and-sort.
+
+ -- Aaron Rainbolt <arraybolt3@gmail.com>  Tue, 28 Jun 2022 23:10:20 -0500
+
+libqtxdg (3.9.1-1) experimental; urgency=medium
+
+  * New upstream release (Closes: #1013334).
+  * Add back symbols file.
+  * Update install file.
+  * Add my name to Uploaders.
+
+ -- Simon Quigley <tsimonq2@debian.org>  Mon, 27 Jun 2022 22:28:56 -0500
+
+libqtxdg (3.8.0-2) experimental; urgency=medium
+
+  * Fix upstream metadata.
+  * Add Rules-Requires-Root: no.
+  * Remove unnecessary -Wl,--as-needed.
+
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Sun, 13 Feb 2022 23:24:53 +0800
+
+libqtxdg (3.8.0-1) experimental; urgency=medium
+
+  [ Andrew Lee (李健秋) ]
+  * New upstream version 3.8.0
+
+  [ S. 7 ]
+  * Update copyright
+  * Bump Standards to 4.6.0 (no changes)
+  * Refresh debian/libqt5xdg3.symbols file.
+  * Refresh debian/libqt5xdgiconloader3.symbols file
+  * debian/libqt5xdg3.install: install lxqt-qtxdg.conf and qtxdg.conf.
+  * Update changelog
+
+  [ Andrew Lee (李健秋) ]
+  * Update debian/copyright.
+  * Use debhelper-compat = 13, no changes needed.
+  * Rework on symbols for i386.
+  * debian/rules: Add cmake fix to make reprotest happy.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Tue, 11 Jan 2022 15:09:23 +0800
 
 libqtxdg (3.6.0-1) unstable; urgency=medium
 
@@ -21,7 +119,7 @@ libqtxdg (3.4.0-1) unstable; urgency=medium
   * Bumped Standards to 4.4.1, no changes needed
   * Removed Dbus patch, fixed upstream
   * Added new symbols
-  * Fixed tools packaging and descriptions 
+  * Fixed tools packaging and descriptions
   * Added qtxdg-dev-tools to libqtxdg recommends
 
  -- Alf Gaida <agaida@siduction.org>  Sun, 27 Oct 2019 18:28:10 +0100

@@ -43,9 +43,7 @@ XdgMenuRule::XdgMenuRule(const QDomElement& element, QObject* parent) :
 }
 
 
-XdgMenuRule::~XdgMenuRule()
-{
-}
+XdgMenuRule::~XdgMenuRule() = default;
 
 
 /************************************************
@@ -114,8 +112,7 @@ bool XdgMenuRuleAnd::check(const QString& desktopFileId, const XdgDesktopFile& d
     for (std::list<XdgMenuRule*>::const_iterator i=mChilds.cbegin(); i!=mChilds.cend(); ++i)
         if (!(*i)->check(desktopFileId, desktopFile))  return false;
 
-    //FIXME: Doon't use implicit casts
-    return mChilds.size();
+    return !mChilds.empty();
 }
 
 
@@ -200,9 +197,7 @@ XdgMenuRules::XdgMenuRules(QObject* parent) :
 }
 
 
-XdgMenuRules::~XdgMenuRules()
-{
-}
+XdgMenuRules::~XdgMenuRules() = default;
 
 
 void XdgMenuRules::addInclude(const QDomElement& element)
