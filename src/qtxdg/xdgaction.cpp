@@ -67,9 +67,7 @@ XdgAction::XdgAction(const XdgAction& other, QObject *parent):
 }
 
 
-XdgAction::~XdgAction()
-{
-}
+XdgAction::~XdgAction() = default;
 
 
 XdgAction& XdgAction::operator=(const XdgAction& other)
@@ -94,7 +92,7 @@ void XdgAction::load(const XdgDesktopFile& desktopFile)
         setText(mDesktopFile.name().replace(QLatin1Char('&'), QLatin1String("&&")));
         setToolTip(mDesktopFile.comment());
 
-        connect(this, SIGNAL(triggered()), this, SLOT(runConmmand()));
+        connect(this, &XdgAction::triggered, this, &XdgAction::runConmmand);
         QMetaObject::invokeMethod(this, "updateIcon", Qt::QueuedConnection);
     }
     else

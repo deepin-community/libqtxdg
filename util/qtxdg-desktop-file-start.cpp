@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     parser.setApplicationDescription(QLatin1String("QtXdg XdgDesktopFile start Tester"));
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addPositionalArgument(QLatin1String("file [urls...]"), QLatin1String("desktop file to start and it's urls"),QLatin1String("file [urls...]"));
+    parser.addPositionalArgument(QLatin1String("file [urls...]"), QLatin1String("desktop file to start and its urls"),QLatin1String("file [urls...]"));
     parser.process(app);
 
     if (parser.positionalArguments().isEmpty()) {
@@ -50,20 +50,21 @@ int main(int argc, char *argv[])
 
     QStringList userArgs = parser.positionalArguments();
     const QString userFileName = userArgs.takeFirst();
-    const QFileInfo fileInfo(userFileName);
-    const QString canonicalFileName = fileInfo.canonicalFilePath();
 
-    if (!fileInfo.exists()) {
-        printErr(QString::fromLatin1("File %1 does not exist\n").arg(userFileName));
-        return EXIT_FAILURE;
+    const QFileInfo fileInfo(userFileName);
+    if (fileInfo.isAbsolute()) {
+        if (!fileInfo.exists()) {
+            printErr(QString::fromLatin1("File %1 does not exist\n").arg(userFileName));
+            return EXIT_FAILURE;
+        }
     }
 
     XdgDesktopFile f;
-    const bool valid = f.load(canonicalFileName);
+    const bool valid = f.load(userFileName);
     if (valid) {
         f.startDetached(userArgs);
     } else {
-        printErr(QString::fromLatin1("%1 is not a valid .desktop file\n").arg(canonicalFileName));
+        printErr(QString::fromLatin1("%1 doesn't exist or isn't a valid .desktop file\n").arg(userFileName));
         return EXIT_FAILURE;
     }
 
