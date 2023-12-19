@@ -1,3 +1,10 @@
+libqtxdg (3.12.0-1deepin1) unstable; urgency=medium
+
+  * release 3.12.0-1deepin1
+  * Add Patch to fix #6480
+
+ -- Mike Chen <chenke@deepin.org>  Tue, 19 Dec 2023 13:49:08 +0800
+
 libqtxdg (3.12.0-1) unstable; urgency=medium
 
   * New upstream release.
