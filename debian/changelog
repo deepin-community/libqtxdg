@@ -1,9 +1,50 @@
-libqtxdg (3.12.0-1deepin1) unstable; urgency=medium
+libqtxdg (4.1.0-1) unstable; urgency=medium
 
-  * release 3.12.0-1deepin1
-  * Add Patch to fix #6480
+  * New upstream version 4.1.0
 
- -- Mike Chen <chenke@deepin.org>  Tue, 19 Dec 2023 13:49:08 +0800
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Tue, 03 Dec 2024 22:06:49 +0800
+
+libqtxdg (4.0.0-2) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Wed, 27 Nov 2024 18:22:24 +0100
+
+libqtxdg (4.0.0-2~exp1) experimental; urgency=medium
+
+  * debian/control: build-deps on qt6-base-private-dev (>= 6.7.2).
+  * debian/control: build-deps on qt6-tools-dev.
+  * debian/control: build-deps on qt6-tools-dev-tools.
+  * debian/control: recommends on qt6-translations-l10n.
+  * debian/control: bump to Standards-version to 4.7.0, no changes needed.
+  * debian/salsa-ci.yml: build against to experimental.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Sun, 06 Oct 2024 12:17:43 +0200
+
+libqtxdg (4.0.0-1) experimental; urgency=medium
+
+  * New upstream version 4.0.0
+  * Clean up of group membership after 2nd calls.
+  * debian/control: build-deps on pkgconf,
+  * debian/control: build-deps on lxqt-build-tools (>= 2.0.0~).
+  * debian/control: build-deps on qt6-base-private-dev (>= 6.6.0~).
+  * debian/control: build-deps on qt6-svg-dev.
+  * debian/control: build-deps on libglib2.0-dev.
+  * Bump libqt5xdg3 to libqt6xdg4.
+  * Bump libqt5xdgiconloader3 to libqt6xdgiconloader4.
+  * Bump libqt5xdg-dev to libqt6xdg-dev.
+  * Bump libqt5xdgiconloader-dev to libqt6xdgiconloader-dev.
+  * debian/control: update depends for libqt6xdgiconloader-dev and qtxdg-
+    dev-tools.
+  * Run wrap-and-sort.
+  * debian/control: libqt6xdg4 conflicts on libqt5xdg3.
+  * debian/copyright: drop upstream deleted file.
+  * debian/salsa-ci.yml: build against to experimental.
+  * debian/salsa-ci.yml: disable i386 build tests due to a qt6 bug.
+  * debian/control: build-deps on lxqt-build-tools (>= 2.0.0+really2.0.0~).
+  * debian/copyright: update.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Fri, 02 Aug 2024 07:22:53 +0200
 
 libqtxdg (3.12.0-1) unstable; urgency=medium
 
