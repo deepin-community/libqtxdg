@@ -1,3 +1,19 @@
+libqtxdg-4.1.0 / 2024-11-05
+============================
+ * Bumped the version to 4.1.0.
+
+libqtxdg-4.0.1 / 2024-10-12
+============================
+ * Added `plasma-applications.menu` to the fallback menu files.
+ * Fixed compilation with Qt ≥ 6.8.
+
+libqtxdg-4.0.0 / 2024-04-17
+============================
+ * Ported to Qt6.
+ * Consider the EV `XDG_CURRENT_DESKTOP` as a colon-separated list.
+ * Fixed an FTBFS with `BUILD_DEV_UTILS` enabled.
+ * Fixed a test file after recent changes in Qt6.
+
 libqtxdg-3.12.0 / 2023-11-05
 ============================
  * Fixed a typo and bumped the version.

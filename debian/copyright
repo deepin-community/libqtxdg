@@ -3,12 +3,11 @@ Upstream-Name: libqtxdg
 Source: https://github.com/lxqt/libqtxdg
 
 Files: *
-Copyright: 2012-2023, LXQt team
+Copyright: 2012-2024, LXQt team
            2010-2012, Razor team
 License: LGPL-2.1+
 
-Files: src/qtxdg/desktopenvironment_p.cpp
-       src/qtxdg/xdgdesktopfile_p.h
+Files: src/qtxdg/xdgdesktopfile_p.h
        test/qtxdg_test.cpp
        src/xdgiconloader/plugin/xdgiconengineplugin.cpp
        src/xdgiconloader/plugin/xdgiconengineplugin.h
@@ -45,7 +44,7 @@ License: BSD-3-clause
 
 Files: debian/*
 Copyright: 2013-2019, Alf Gaida <agaida@siduction.org>
-           2015-2023, Andrew Lee (李健秋) <ajqlee@debian.org>
+           2015-2024, Andrew Lee (李健秋) <ajqlee@debian.org>
            2014-2023, ChangZhuo Chen (陳昌倬) <czchen@debian.org>
            2022,      S. 7 <severusseptimius7@gmail.com>
 License: LGPL-2.1+

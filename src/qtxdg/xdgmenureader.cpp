@@ -79,16 +79,13 @@ bool XdgMenuReader::load(const QString& fileName, const QString& baseDir)
     //qDebug() << "Load file:" << mFileName;
     mMenu->addWatchPath(mFileName);
 
-    QString errorStr;
-    int errorLine;
-    int errorColumn;
-
-    if (!mXml.setContent(&file, true, &errorStr, &errorLine, &errorColumn))
+    QDomDocument::ParseResult res = mXml.setContent(&file, QDomDocument::ParseOption::UseNamespaceProcessing);
+    if (!res)
     {
         mErrorStr = QString::fromLatin1("Parse error at line %1, column %2:\n%3")
-                        .arg(errorLine)
-                        .arg(errorColumn)
-                        .arg(errorStr);
+                        .arg(res.errorLine)
+                        .arg(res.errorColumn)
+                        .arg(res.errorMessage);
        return false;
     }
 
@@ -212,7 +209,7 @@ void XdgMenuReader::processMergeFileTag(QDomElement& element, QStringList* merge
         QString relativeName;
         QStringList configDirs = XdgDirs::configDirs();
 
-        for (const QString &configDir : qAsConst(configDirs))
+        for (const QString &configDir : std::as_const(configDirs))
         {
             if (mFileName.startsWith(configDir))
             {
@@ -233,7 +230,7 @@ void XdgMenuReader::processMergeFileTag(QDomElement& element, QStringList* merge
         if (relativeName.isEmpty())
             return;
 
-        for (const QString &configDir : qAsConst(configDirs))
+        for (const QString &configDir : std::as_const(configDirs))
         {
             if (QFileInfo::exists(configDir + relativeName))
             {
@@ -292,7 +289,7 @@ void XdgMenuReader::processDefaultMergeDirsTag(QDomElement& element, QStringList
     QStringList dirs = XdgDirs::configDirs();
     dirs << XdgDirs::configHome();
 
-    for (const QString &dir : qAsConst(dirs))
+    for (const QString &dir : std::as_const(dirs))
     {
         mergeDir(QString::fromLatin1("%1/menus/%2-merged").arg(dir, menuBaseName), element, mergedFiles);
     }
@@ -326,7 +323,7 @@ void XdgMenuReader::processDefaultAppDirsTag(QDomElement& element)
     QStringList dirs = XdgDirs::dataDirs();
     dirs.prepend(XdgDirs::dataHome(false));
 
-    for (const QString &dir : qAsConst(dirs))
+    for (const QString &dir : std::as_const(dirs))
     {
         //qDebug() << "Add AppDir: " << dir + "/applications/";
         addDirTag(element, QLatin1String("AppDir"), dir + QLatin1String("/applications/"));

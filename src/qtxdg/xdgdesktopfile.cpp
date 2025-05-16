@@ -27,7 +27,6 @@
 
 // clazy:excludeall=non-pod-global-static
 
-#include "desktopenvironment_p.cpp"
 #include "xdgdesktopfile.h"
 #include "xdgdesktopfile_p.h"
 #include "xdgdirs.h"
@@ -344,9 +343,9 @@ QString &unEscapeExec(QString& str, QList<int> &literals)
     // The parseCombinedArgString() splits the string by the space symbols,
     // we temporarily replace them on the special characters.
     // Replacement will reverse after the splitting.
-    repl.insert(QLatin1Char(' '),  01);    // space
-    repl.insert(QLatin1Char('\t'), 02);    // tab
-    repl.insert(QLatin1Char('\n'), 03);    // newline,
+    repl.insert(QLatin1Char(' '),  QChar(01));    // space
+    repl.insert(QLatin1Char('\t'), QChar(02));    // tab
+    repl.insert(QLatin1Char('\n'), QChar(03));    // newline,
 
     repl.insert(QLatin1Char('"'), QLatin1Char('"'));    // double quote,
     repl.insert(QLatin1Char('\''), QLatin1Char('\''));  // single quote ("'"),
@@ -557,7 +556,7 @@ bool XdgDesktopFileData::startApplicationDetached(const XdgDesktopFile *q, const
     {
         for (const QString &s : nonDetachExecs)
         {
-            for (const QString &a : qAsConst(args))
+            for (const QString &a : std::as_const(args))
             {
                 if (a.contains(s))
                 {
@@ -577,7 +576,7 @@ bool XdgDesktopFileData::startApplicationDetached(const XdgDesktopFile *q, const
         return QProcess::startDetached(cmd, args, workingDir);
     } else
     {
-        QScopedPointer<QProcess> p(new QProcess);
+        auto p = std::make_unique<QProcess>();
         p->setStandardInputFile(QProcess::nullDevice());
         p->setProcessChannelMode(QProcess::ForwardedChannels);
         if (!workingDir.isEmpty())
@@ -586,7 +585,7 @@ bool XdgDesktopFileData::startApplicationDetached(const XdgDesktopFile *q, const
         bool started = p->waitForStarted();
         if (started)
         {
-            QProcess* proc = p.take(); //release the pointer(will be selfdestroyed upon finish)
+            QProcess* proc = p.release(); //release the pointer(will be selfdestroyed upon finish)
             QObject::connect(proc, static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished),
                 proc, &QProcess::deleteLater);
             QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, proc, &QProcess::terminate);
@@ -805,7 +804,7 @@ QVariant XdgDesktopFile::value(const QString& key, const QVariant& defaultValue)
 {
     QString path = (!prefix().isEmpty()) ? prefix() + QLatin1Char('/') + key : key;
     QVariant res = d->mItems.value(path, defaultValue);
-    if (res.type() == QVariant::String)
+    if (res.metaType().id() == QMetaType::QString)
     {
         QString s = res.toString();
         return unEscape(s, false);
@@ -818,7 +817,7 @@ QVariant XdgDesktopFile::value(const QString& key, const QVariant& defaultValue)
 void XdgDesktopFile::setValue(const QString &key, const QVariant &value)
 {
     QString path = (!prefix().isEmpty()) ? prefix() + QLatin1Char('/') + key : key;
-    if (value.type() == QVariant::String)
+    if (value.metaType().id() == QMetaType::QString)
     {
 
         QString s=value.toString();
@@ -1205,9 +1204,9 @@ QStringList XdgDesktopFile::expandExecString(const QStringList& urls) const
         // The parseCombinedArgString() splits the string by the space symbols,
         // we temporarily replaced them on the special characters.
         // Now we reverse it.
-        token.replace(01, QLatin1Char(' '));
-        token.replace(02, QLatin1Char('\t'));
-        token.replace(03, QLatin1Char('\n'));
+        token.replace(QChar(01), QLatin1Char(' '));
+        token.replace(QChar(02), QLatin1Char('\t'));
+        token.replace(QChar(03), QLatin1Char('\n'));
 
         // ----------------------------------------------------------
         // A single file name, even if multiple files are selected.
@@ -1376,12 +1375,20 @@ bool XdgDesktopFile::isSuitable(bool excludeHidden, const QString &environment) 
     // A list of strings identifying the environments that should display/not
     // display a given desktop entry.
     // OnlyShowIn ........
-    QString env;
+    QStringList env;
     if (environment.isEmpty())
-        env = QString::fromLocal8Bit(detectDesktopEnvironment());
+        env = QString::fromLocal8Bit(qgetenv("XDG_CURRENT_DESKTOP").toLower()).split(QLatin1Char(':'));
     else {
-        env = environment.toUpper();
+        env.push_back(environment.toLower());
     }
+
+    const auto has_env_intersection = [&env] (const QStringList & values) -> bool {
+        for (const auto & val : values) {
+            if (env.cend() != std::find(env.cbegin(), env.cend(), val))
+                return true;
+        }
+        return false;
+    };
 
     QString key;
     bool keyFound = false;
@@ -1396,12 +1403,8 @@ bool XdgDesktopFile::isSuitable(bool excludeHidden, const QString &environment) 
         keyFound = contains(key) ? true : false;
     }
 
-    if (keyFound)
-    {
-        QStringList s = value(key).toString().toUpper().split(QLatin1Char(';'));
-        if (!s.contains(env))
-            return false;
-    }
+    if (keyFound && !has_env_intersection(value(key).toString().toLower().split(QLatin1Char(';'))))
+        return false;
 
     // NotShowIn .........
     if (contains(notShowInKey))
@@ -1415,12 +1418,8 @@ bool XdgDesktopFile::isSuitable(bool excludeHidden, const QString &environment) 
         keyFound = contains(key) ? true : false;
     }
 
-    if (keyFound)
-    {
-        QStringList s = value(key).toString().toUpper().split(QLatin1Char(';'));
-        if (s.contains(env))
-            return false;
-    }
+    if (keyFound && has_env_intersection(value(key).toString().toLower().split(QLatin1Char(';'))))
+        return false;
 
     // actually installed. If not, entry may not show in menus, etc.
     if (contains(QLatin1String("TryExec")))
@@ -1505,7 +1504,7 @@ QString findDesktopFile(const QString& desktopName)
     QStringList dataDirs = XdgDirs::dataDirs();
     dataDirs.prepend(XdgDirs::dataHome(false));
 
-    for (const QString &dirName : qAsConst(dataDirs))
+    for (const QString &dirName : std::as_const(dataDirs))
     {
         QString f = findDesktopFile(dirName + QLatin1String("/applications"), desktopName);
         if (!f.isEmpty())
@@ -1581,7 +1580,7 @@ bool writeDesktopFile(QIODevice & device, const QSettings::SettingsMap & map)
     for (auto it = map.constBegin(); it != map.constEnd(); ++it)
     {
         bool isString     = it.value().canConvert<QString>();
-        bool isStringList = (it.value().type() == QVariant::StringList);
+        bool isStringList = (it.value().metaType().id() == QMetaType::QStringList);
 
         if ((! isString) && (! isStringList))
         {

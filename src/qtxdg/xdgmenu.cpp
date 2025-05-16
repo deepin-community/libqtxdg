@@ -227,7 +227,7 @@ void XdgMenuPrivate::load(const QString& fileName)
         qWarning() << QString::fromLatin1("%1 not loading: %2").arg(fileName, file.errorString());
         return;
     }
-    mXml.setContent(&file, true);
+    mXml.setContent(&file, QDomDocument::ParseOption::UseNamespaceProcessing);
 }
 
 
@@ -537,12 +537,12 @@ void XdgMenuPrivate::processDirectoryEntries(QDomElement& element, const QString
     dirs << parentDirs;
 
     bool found = false;
-    for (const QString &file : qAsConst(files)){
+    for (const QString &file : std::as_const(files)){
         if (file.startsWith(QLatin1Char('/')))
             found = loadDirectoryFile(file, element);
         else
         {
-            for (const QString &dir : qAsConst(dirs))
+            for (const QString &dir : std::as_const(dirs))
             {
                 found = loadDirectoryFile(dir + QLatin1Char('/') + file, element);
                 if (found) break;
@@ -666,12 +666,13 @@ QString XdgMenu::getMenuFileName(const QString& baseName)
     // rest files ordered by priority (descending)
     wellKnownFiles << QLatin1String("kde4-applications.menu");
     wellKnownFiles << QLatin1String("kde-applications.menu");
+    wellKnownFiles << QLatin1String("plasma-applications.menu");
     wellKnownFiles << QLatin1String("gnome-applications.menu");
     wellKnownFiles << QLatin1String("lxde-applications.menu");
 
     for (const QString &configDir : configDirs)
     {
-        for (const QString &f : qAsConst(wellKnownFiles))
+        for (const QString &f : std::as_const(wellKnownFiles))
         {
             QFileInfo file(QString::fromLatin1("%1/menus/%2").arg(configDir, f));
             if (file.exists())
